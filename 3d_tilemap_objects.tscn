@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://d2vka8nuj7iy6"]
+
+[ext_resource type="Material" uid="uid://d21dphdbl4tdm" path="res://wall.tres" id="1_eoomg"]
+[ext_resource type="Material" uid="uid://c5dx23wgc64k2" path="res://ceiling.tres" id="2_dhca8"]
+[ext_resource type="Material" uid="uid://beilg7u81cmwj" path="res://floor.tres" id="3_tlw6s"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wgq22"]
+lightmap_size_hint = Vector2i(26, 66)
+size = Vector3(4, 0.5, 4)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_8dfr7"]
+points = PackedVector3Array(-2.031746, -0.28169006, -2.0317461, 2.031684, 0.2896266, 2.0317461, 2.031684, -0.28169006, 2.0317461, 2.031684, 0.2896266, -2.0317461, -2.031746, 0.2896266, 2.0317461, -2.031746, -0.28169006, 2.0317461, 2.031684, -0.28169006, -2.0317461, -2.031746, 0.2896266, -2.0317461)
+
+[sub_resource type="QuadMesh" id="QuadMesh_l83t3"]
+material = ExtResource("2_dhca8")
+size = Vector2(4, 4)
+orientation = 1
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_87m0f"]
+points = PackedVector3Array(2.0317461, 0.031746034, 2.0317461, -2.0317461, -0.031746034, -2.0317461, -2.0317461, 0.031746034, -2.0317461, 2.0317461, -0.031746034, -2.0317461, -2.0317461, -0.031746034, 2.0317461, -2.0317461, 0.031746034, 2.0317461, 2.0317461, 0.031746034, -2.0317461, 2.0317461, -0.031746034, 2.0317461)
+
+[sub_resource type="QuadMesh" id="QuadMesh_eqror"]
+material = ExtResource("3_tlw6s")
+size = Vector2(4, 4)
+orientation = 1
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_bswfn"]
+points = PackedVector3Array(2.0317461, 0.031746034, 2.0317461, -2.0317461, -0.031746034, -2.0317461, -2.0317461, 0.031746034, -2.0317461, 2.0317461, -0.031746034, -2.0317461, -2.0317461, -0.031746034, 2.0317461, -2.0317461, 0.031746034, 2.0317461, 2.0317461, 0.031746034, -2.0317461, 2.0317461, -0.031746034, 2.0317461)
+
+[node name="3D_Tilemap_Objects" type="Node3D" unique_id=85623460]
+
+[node name="Wall" type="MeshInstance3D" parent="." unique_id=1641761280]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 1, 0)
+mesh = SubResource("BoxMesh_wgq22")
+surface_material_override/0 = ExtResource("1_eoomg")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Wall" unique_id=1627911518]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Wall/StaticBody3D" unique_id=1091454553]
+shape = SubResource("ConvexPolygonShape3D_8dfr7")
+
+[node name="Ceiling" type="MeshInstance3D" parent="." unique_id=698886310]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("QuadMesh_l83t3")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ceiling" unique_id=896484699]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ceiling/StaticBody3D" unique_id=908150492]
+shape = SubResource("ConvexPolygonShape3D_87m0f")
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=173507427]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("QuadMesh_eqror")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor" unique_id=1407233039]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D" unique_id=260508422]
+shape = SubResource("ConvexPolygonShape3D_bswfn")

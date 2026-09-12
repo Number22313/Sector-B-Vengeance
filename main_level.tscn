@@ -1,0 +1,177 @@
+[gd_scene format=3 uid="uid://ctvxj6vxwetm4"]
+
+[ext_resource type="Script" uid="uid://udds74utcehm" path="res://main_level.gd" id="1_4mnpp"]
+[ext_resource type="Script" uid="uid://c0votn40f8lp" path="res://player.gd" id="1_6614m"]
+[ext_resource type="MeshLibrary" uid="uid://0yfsicccelft" path="res://Gridmap_Objects.meshlib" id="1_bw3m6"]
+[ext_resource type="Script" uid="uid://dh7ei3fha0c8f" path="res://player_camera.gd" id="2_bhu08"]
+[ext_resource type="PackedScene" uid="uid://bgy6f48tv3uec" path="res://player_gui.tscn" id="4_05as6"]
+[ext_resource type="Script" uid="uid://binc50vutf853" path="res://Raycast_Interact.gd" id="4_ctebd"]
+[ext_resource type="Texture2D" uid="uid://divgujd51otfp" path="res://textures/Ceiling.png" id="5_5ymk8"]
+[ext_resource type="Script" uid="uid://cvsubg46g0lb3" path="res://left_door.gd" id="7_eqmdw"]
+[ext_resource type="Script" uid="uid://dyqfycq17mv8g" path="res://right_door.gd" id="9_uhmka"]
+[ext_resource type="Script" uid="uid://cglq6ssdqar5i" path="res://right_button.gd" id="10_5fjre"]
+[ext_resource type="Script" uid="uid://bdx13oxyjyyf7" path="res://left_button.gd" id="10_oeaww"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6614m"]
+albedo_color = Color(0.14858034, 0, 0.97411805, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_bhu08"]
+material = SubResource("StandardMaterial3D_6614m")
+size = Vector3(1, 2, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6nngp"]
+size = Vector3(1, 2, 1)
+
+[sub_resource type="Animation" id="Animation_05as6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player_Camera:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_5ymk8"]
+resource_name = "View_Bobbing"
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player_Camera:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5, 0.625, 0.75, 0.875),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0.05, 1.08, 0), Vector3(0.08, 1.15, 0), Vector3(0.05, 1, 0), Vector3(0, 0.95, 0), Vector3(-0.05, 1, 0), Vector3(-0.08, 1.15, 0), Vector3(-0.05, 1.08, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4mnpp"]
+_data = {
+&"RESET": SubResource("Animation_05as6"),
+&"View_Bobbing": SubResource("Animation_5ymk8")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_05as6"]
+size = Vector3(4, 4, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4mnpp"]
+albedo_texture = ExtResource("5_5ymk8")
+
+[sub_resource type="BoxMesh" id="BoxMesh_ctebd"]
+material = SubResource("StandardMaterial3D_4mnpp")
+size = Vector3(4, 4, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eqmdw"]
+size = Vector3(1, 1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uhmka"]
+albedo_color = Color(0.7397895, 1.9372628e-06, 9.62615e-07, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5fjre"]
+material = SubResource("StandardMaterial3D_uhmka")
+size = Vector3(1, 1, 0.1)
+
+[node name="Main Level" type="Node3D" unique_id=1792138898]
+script = ExtResource("1_4mnpp")
+
+[node name="Player" type="CharacterBody3D" parent="." unique_id=1124720974]
+transform = Transform3D(-3.4969112e-08, 0, 0.8, 0, 0.8, 0, -0.8, 0, -3.4969112e-08, 0, 2, -1)
+script = ExtResource("1_6614m")
+
+[node name="Player_Texture" type="MeshInstance3D" parent="Player" unique_id=2042854482]
+visible = false
+mesh = SubResource("BoxMesh_bhu08")
+
+[node name="Player_Collision" type="CollisionShape3D" parent="Player" unique_id=326030446]
+shape = SubResource("BoxShape3D_6nngp")
+
+[node name="Camera_Bobbing" type="AnimationPlayer" parent="Player" unique_id=1197940223]
+libraries/ = SubResource("AnimationLibrary_4mnpp")
+
+[node name="Player_Camera" type="Camera3D" parent="Player" unique_id=666370516]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("2_bhu08")
+
+[node name="Flashlight" type="SpotLight3D" parent="Player/Player_Camera" unique_id=1185547777]
+light_color = Color(1, 1, 0.8666667, 1)
+light_energy = 10.0
+spot_range = 15.0
+
+[node name="RayCast" type="RayCast3D" parent="Player/Player_Camera" unique_id=1974598111]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+target_position = Vector3(0, 0, -4)
+debug_shape_custom_color = Color(1, 1, 1, 1)
+debug_shape_thickness = 5
+script = ExtResource("4_ctebd")
+
+[node name="Map" type="GridMap" parent="." unique_id=1545534444]
+mesh_library = ExtResource("1_bw3m6")
+data = {
+"cells": PackedInt32Array(0, 0, 2, 65534, 0, 2, 65534, 65534, 2, 0, 65534, 2, 0, 65533, 655360, 1, 65534, 1048576, 1, 0, 1048576, 0, 1, 655360, 65532, 1, 655360, 65533, 0, 1048576, 65533, 65534, 1048576, 65532, 65533, 655360, 65534, 2, 655362, 65532, 2, 655362, 65534, 65532, 655362, 65534, 4, 655362, 65532, 4, 655362, 65530, 2, 655362, 65534, 65530, 655362, 65532, 65530, 655362, 65534, 65528, 655362, 65532, 65528, 655362, 65532, 65526, 655362, 65534, 65526, 655362, 65534, 65524, 655362, 65532, 65524, 655362, 65532, 65532, 655362, 65535, 65532, 1048576, 65531, 65532, 1048576, 65531, 65530, 1048576, 65535, 65530, 1048576, 65535, 65528, 1048576, 65535, 65526, 1048576, 65535, 65524, 1048576, 65534, 65523, 0, 65532, 65523, 0, 65530, 65524, 2, 65530, 65526, 2, 65530, 65527, 0, 65530, 65523, 0, 65535, 2, 1441792, 65535, 4, 1441792, 65534, 5, 655360, 65532, 5, 655360, 65530, 5, 655360, 65528, 65524, 655362, 65528, 65526, 655362, 65528, 65523, 655360, 65528, 65527, 655360, 65530, 65528, 655362, 65530, 65530, 655362, 65530, 65532, 655362, 65528, 65532, 655362, 65528, 65530, 655362, 65528, 65528, 655362, 65526, 65532, 655362, 65526, 65530, 655362, 65526, 65528, 655362, 65530, 65534, 655362, 65526, 65534, 655362, 65528, 65534, 655362, 65531, 65534, 1048576, 65530, 65535, 0, 65528, 65535, 0, 65526, 65535, 0, 65525, 65534, 1441792, 65525, 65530, 1441792, 65525, 65528, 1441792, 65526, 65527, 655360, 65530, 1, 655360, 65528, 1, 655360, 65527, 0, 1048576, 65523, 2, 1441792, 65522, 1, 655360, 65521, 0, 1048576, 65528, 2, 1048578, 65526, 4, 1048578, 65526, 2, 1048578, 65524, 2, 1048578, 65526, 0, 1048578, 65524, 0, 1048578, 65522, 0, 1048578, 65526, 6, 2, 65524, 6, 2, 65524, 4, 2, 65528, 5, 0, 65523, 4, 1048576, 65523, 6, 1048576, 65524, 5, 0, 65524, 8, 2, 65526, 8, 2, 65528, 6, 2, 65528, 8, 2, 65530, 6, 2, 65530, 8, 2, 65532, 6, 2, 65532, 8, 2, 65532, 10, 2, 65530, 10, 2, 65528, 10, 2, 65524, 10, 2, 65526, 10, 2, 65523, 8, 1441792, 65523, 10, 1441792, 65524, 11, 655360, 65526, 11, 655360, 65528, 11, 655360, 65530, 11, 655360, 65532, 11, 655360, 65533, 10, 1048576, 65533, 8, 1048576, 65533, 6, 1048576, 65524, 65534, 1048578, 65522, 65534, 1048578, 65520, 65534, 1048578, 65520, 65532, 1048578, 65522, 65532, 1048578, 65524, 65532, 1048578, 65524, 65530, 1048578, 65522, 65530, 1048578, 65520, 65530, 1048578, 65524, 65529, 0, 65520, 65529, 0, 65519, 65530, 1441792, 65520, 65535, 655360, 65526, 65526, 655362, 65526, 65524, 655362, 65526, 65522, 655362, 65526, 65520, 655362, 65524, 65520, 655362, 65524, 65522, 655362, 65524, 65524, 655362, 65524, 65526, 655362, 65524, 65528, 655362, 65522, 65528, 655362, 65522, 65526, 655362, 65522, 65524, 655362, 65522, 65520, 655362, 65522, 65522, 655362, 65527, 65522, 1048576, 65527, 65520, 1048576, 65526, 65519, 0, 65524, 65519, 0, 65522, 65519, 0, 65521, 65520, 1441792, 65521, 65524, 1441792, 65521, 65526, 1441792, 65521, 65528, 1441792, 65518, 65532, 1441794, 65518, 65534, 1441794, 65518, 0, 1441794, 65518, 2, 1441794, 65516, 0, 1441794, 65516, 65534, 1441794, 65516, 65532, 1441794, 65514, 65532, 1441794, 65514, 65534, 1441794, 65514, 0, 1441794, 65519, 0, 1441792, 65519, 2, 1441792, 65520, 3, 655360, 65522, 3, 655360, 65516, 3, 655360, 65515, 4, 1048576, 65515, 6, 1048576, 65515, 8, 1048576, 65516, 9, 0, 65518, 9, 0, 65520, 9, 0, 65522, 9, 0, 65522, 4, 2, 65522, 6, 2, 65522, 8, 2, 65520, 4, 2, 65520, 6, 2, 65520, 8, 2, 65518, 8, 2, 65516, 8, 2, 65516, 6, 2, 65516, 4, 2, 65518, 4, 2, 65518, 6, 2, 65518, 65530, 2, 65518, 65528, 2, 65520, 65528, 2, 65520, 65526, 2, 65520, 65524, 2, 65520, 65522, 2, 65518, 65526, 2, 65516, 65530, 2, 65517, 2, 1441792, 65516, 1, 655360, 65514, 1, 655360, 65513, 0, 1048576, 65513, 65534, 1048576, 65515, 65530, 1048576, 65516, 65529, 0, 65517, 65528, 1048576, 65517, 65524, 1441792, 65520, 65521, 0, 65518, 65521, 0, 65517, 65522, 1441792, 65518, 65524, 1441794, 65518, 65522, 1441794, 65519, 65532, 1441792, 65516, 65525, 655360, 65516, 65527, 655360, 65514, 65527, 655360, 65514, 65531, 0, 65511, 65526, 1441792, 65511, 65524, 1441792, 65512, 65523, 655360, 65515, 65524, 1048576, 65514, 65523, 0, 65516, 65526, 2, 65514, 65526, 2, 65514, 65524, 2, 65512, 65524, 2, 65512, 65526, 2, 65526, 65523, 0, 65522, 65523, 0, 65512, 65528, 2, 65512, 65530, 2, 65510, 65532, 2, 65510, 65530, 2, 65510, 65528, 2, 65508, 65528, 2, 65508, 65530, 2, 65508, 65532, 2, 65508, 65534, 2, 65510, 65534, 2, 65512, 65534, 2, 65512, 0, 2, 65510, 0, 2, 65508, 0, 2, 65506, 0, 2, 65506, 65534, 2, 65506, 65532, 2, 65506, 65530, 2, 65506, 65528, 2, 65512, 2, 2, 65510, 2, 2, 65508, 2, 2, 65506, 2, 2, 65506, 4, 2, 65508, 4, 2, 65510, 4, 2, 65512, 4, 2, 65513, 65528, 1441792, 65513, 65530, 1441792, 65513, 2, 1441792, 65513, 4, 1441792, 65512, 5, 655360, 65510, 5, 655360, 65508, 5, 655360, 65506, 5, 655360, 65505, 4, 1048576, 65505, 2, 1048576, 65505, 0, 1048576, 65505, 65534, 1048576, 65505, 65532, 1048576, 65505, 65530, 1048576, 65505, 65528, 1048576, 65506, 65527, 0, 65508, 65527, 0, 65510, 65527, 0, 65512, 65532, 2, 65528, 4, 1048578, 65530, 4, 655362)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Player_GUI" parent="." unique_id=586660666 instance=ExtResource("4_05as6")]
+
+[node name="Ceiling" type="GridMap" parent="." unique_id=1669168855]
+transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 4, 0)
+mesh_library = ExtResource("1_bw3m6")
+data = {
+"cells": PackedInt32Array(65506, 7, 1, 65506, 5, 1, 65506, 3, 1, 65506, 1, 1, 65506, 65535, 1, 65506, 65533, 1, 65506, 65531, 1, 65508, 65531, 1, 65510, 65531, 1, 65510, 65533, 1, 65510, 65535, 1, 65510, 1, 1, 65510, 3, 1, 65510, 5, 1, 65510, 7, 1, 65508, 7, 1, 65508, 5, 1, 65508, 3, 1, 65508, 1, 1, 65508, 65535, 1, 65508, 65533, 1, 65512, 65531, 1, 65512, 65533, 1, 65512, 65535, 1, 65512, 1, 1, 65512, 3, 1, 65512, 5, 1, 65512, 7, 1, 65512, 9, 1, 65512, 11, 1, 65514, 11, 1, 65514, 9, 1, 65516, 9, 1, 65518, 9, 1, 65518, 11, 1, 65518, 13, 1, 65520, 13, 1, 65520, 11, 1, 65520, 9, 1, 65520, 7, 1, 65518, 7, 1, 65518, 5, 1, 65516, 5, 1, 65516, 3, 1, 65516, 1, 1, 65516, 65535, 1, 65514, 3, 1, 65514, 1, 1, 65514, 65535, 1, 65518, 65535, 1, 65518, 1, 1, 65518, 3, 1, 65518, 65533, 1, 65516, 65531, 1, 65516, 65529, 1, 65516, 65527, 1, 65518, 65527, 1, 65518, 65529, 1, 65518, 65531, 1, 65520, 65531, 1, 65520, 65529, 1, 65520, 65527, 1, 65522, 65531, 1, 65522, 65529, 1, 65522, 65527, 1, 65520, 1, 1, 65522, 15, 1, 65524, 13, 1, 65524, 15, 1, 65526, 15, 1, 65526, 13, 1, 65522, 11, 1, 65522, 9, 1, 65522, 7, 1, 65522, 5, 1, 65520, 5, 1, 65520, 3, 1, 65522, 3, 1, 65522, 1, 1, 65522, 65535, 1, 65524, 65535, 1, 65524, 1, 1, 65524, 3, 1, 65524, 5, 1, 65524, 7, 1, 65524, 9, 1, 65524, 11, 1, 65526, 11, 1, 65526, 9, 1, 65528, 9, 1, 65528, 11, 1, 65530, 11, 1, 65530, 9, 1, 65526, 3, 1, 65526, 1, 1, 65528, 1, 1, 65528, 3, 1, 65530, 3, 1, 65530, 1, 1, 65530, 5, 1, 65528, 5, 1, 65526, 5, 1, 65526, 7, 1, 65528, 7, 1, 65530, 7, 1, 65534, 3, 1, 65532, 3, 1, 65532, 5, 1, 65534, 5, 1, 65534, 7, 1, 65532, 7, 1, 65532, 9, 1, 65534, 9, 1, 65534, 11, 1, 65532, 11, 1, 65534, 1, 1, 65534, 65535, 1, 0, 65535, 1, 0, 1, 1, 65534, 65533, 1, 65534, 65531, 1, 65532, 65531, 1, 65532, 65533, 1, 65530, 65533, 1, 65530, 65531, 1, 65528, 65531, 1, 65528, 65533, 1, 65526, 65533, 1, 65526, 65531, 1, 65524, 65533, 1, 65524, 65531, 1, 65526, 65535, 1, 65526, 65529, 1, 65524, 65529, 1, 65524, 65527, 1, 65524, 65525, 1, 65526, 65525, 1, 65526, 65527, 1, 65528, 65525, 1, 65528, 65527, 1, 65528, 65529, 1, 65530, 65529, 1, 65530, 65527, 1, 65530, 65525, 1, 65532, 65525, 1, 65532, 65527, 1, 65532, 65529, 1, 65522, 13, 1)
+}
+
+[node name="Support_Columns" type="GridMap" parent="." unique_id=1903469517]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh_library = ExtResource("1_bw3m6")
+data = {
+"cells": PackedInt32Array(65533, 65533, 3, 65533, 1, 3, 65535, 1, 3, 65535, 65533, 3, 65527, 5, 3, 65525, 5, 3, 65523, 1, 3, 65527, 1, 3, 65525, 65535, 3, 65525, 65533, 3, 65519, 65535, 3, 65517, 1, 3, 65521, 65535, 3, 65513, 65531, 3, 65515, 65531, 3, 65519, 65529, 3, 65517, 65529, 3, 65517, 65527, 3, 65523, 65529, 3, 65525, 65527, 3, 65525, 65531, 3, 65521, 65529, 3, 65531, 65529, 3, 65531, 65527, 3, 65525, 65523, 3, 65523, 65523, 3, 65521, 65521, 3, 65517, 65525, 3, 65515, 65525, 3, 65511, 65527, 3, 65513, 65533, 3, 65519, 65533, 3, 65521, 65523, 3, 65513, 65527, 3, 65517, 3, 3, 65519, 3, 3)
+}
+
+[node name="Left Door" type="AnimatableBody3D" parent="." unique_id=1866049901]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, 3)
+script = ExtResource("7_eqmdw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Left Door" unique_id=2030084561]
+shape = SubResource("BoxShape3D_05as6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Left Door" unique_id=1816878698]
+mesh = SubResource("BoxMesh_ctebd")
+
+[node name="Right Door" type="AnimatableBody3D" parent="." unique_id=1915076021]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, -5)
+script = ExtResource("9_uhmka")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Right Door" unique_id=1861849519]
+shape = SubResource("BoxShape3D_05as6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Right Door" unique_id=1410449867]
+mesh = SubResource("BoxMesh_ctebd")
+
+[node name="Left Button" type="StaticBody3D" parent="." unique_id=1728812199]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 1.5, 2.7)
+script = ExtResource("10_oeaww")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Left Button" unique_id=738254936]
+shape = SubResource("BoxShape3D_eqmdw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Left Button" unique_id=1157021273]
+mesh = SubResource("BoxMesh_5fjre")
+
+[node name="Right Button" type="StaticBody3D" parent="." unique_id=159608302]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 1.5, -4.7)
+script = ExtResource("10_5fjre")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Right Button" unique_id=263897183]
+shape = SubResource("BoxShape3D_eqmdw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Right Button" unique_id=655138288]
+mesh = SubResource("BoxMesh_5fjre")
