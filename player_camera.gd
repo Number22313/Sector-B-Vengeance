@@ -27,21 +27,20 @@ func _unhandled_input(event: InputEvent) -> void:
 			door_shake()
 
 func door_shake():
-	shaking = true
-	var duration: float = 0.5
+	if not shaking:
+		shaking = true
+		var shake_length = 0.2
+		var start_position = self.position
+		while shake_length > 0:
+			var camera_offset = Vector3(randf_range(-0.05,0.05),randf_range(-0.05,0.05), 0.0)
+			self.position = start_position + camera_offset
+			
+			shake_length -= get_process_delta_time()
+			await get_tree().process_frame
+		
+		self.position = start_position
+		shaking = false
 	
-	while duration > 0:
-		var camera_shake_offset_x = randf_range(-0.03,0.03)
-		var camera_shake_offset_y = randf_range(-0.03,0.03)
-		
-		rotation.x = initial_rotation.x + camera_shake_offset_x
-		rotation.y = initial_rotation.y + camera_shake_offset_y
-		
-		duration -= get_process_delta_time()
-		await get_tree().process_frame
-
-	rotation = initial_rotation
-	shaking = false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass

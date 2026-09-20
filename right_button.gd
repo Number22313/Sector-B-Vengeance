@@ -2,6 +2,7 @@ extends StaticBody3D
 
 @onready var Right_Door = $"../Right Door"
 @onready var right_door_position: Vector3 = Right_Door.position
+@onready var player_camera = $"../../../Player/Player_Camera"
 
 var open_door: bool = false
 
@@ -21,6 +22,9 @@ func interact():
 	
 	right_door_tween.tween_property(Right_Door, "position", right_door_slide, 0.6)
 	
+	if open_door:
+		await get_tree().create_timer(0.3).timeout
+		player_camera.door_shake()
 	open_door = not open_door
 
 

@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://bheaybeitrx10"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cana6"]
+albedo_color = Color(0, 0.37957746, 0.43998024, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wif51"]
+material = SubResource("StandardMaterial3D_cana6")
+size = Vector3(6, 1, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8oyl3"]
+size = Vector3(6, 1, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wif51"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_8oyl3"]
+material = SubResource("StandardMaterial3D_wif51")
+size = Vector3(1.8, 3, 1.8)
+
+[node name="Node3D" type="Node3D" unique_id=2083535179]
+
+[node name="Table" type="MeshInstance3D" parent="." unique_id=36980428]
+mesh = SubResource("BoxMesh_wif51")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Table" unique_id=1959496923]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Table/StaticBody3D" unique_id=1588124658]
+shape = SubResource("BoxShape3D_8oyl3")
+
+[node name="Arcade Machine" type="MeshInstance3D" parent="." unique_id=457502011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.4)
+mesh = SubResource("BoxMesh_8oyl3")

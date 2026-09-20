@@ -2,6 +2,7 @@ extends StaticBody3D
 
 @onready var Left_Door = $"../Left Door"
 @onready var left_door_position: Vector3 = Left_Door.position
+@onready var player_camera = $"../../../Player/Player_Camera"
 
 var open_door: bool = false
 
@@ -12,7 +13,7 @@ func _ready() -> void:
 func interact():
 	var left_door_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	var left_door_slide: Vector3
-	if not open_door:
+	if open_door:
 		left_door_slide = left_door_position + Vector3(0, 4, 0)
 		print("Left door open")
 	else:
@@ -21,6 +22,9 @@ func interact():
 	
 	left_door_tween.tween_property(Left_Door, "position", left_door_slide, 0.6)
 	
+	if not open_door:
+		await get_tree().create_timer(0.3).timeout
+		player_camera.door_shake()
 	open_door = not open_door
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

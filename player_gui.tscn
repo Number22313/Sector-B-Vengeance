@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bgy6f48tv3uec"]
 
 [ext_resource type="Script" uid="uid://dcpuvluglu06i" path="res://player_gui.gd" id="1_ogtmc"]
+[ext_resource type="Script" uid="uid://b312rrg8yo150" path="res://animatronic_perspective.gd" id="2_100ct"]
 
 [node name="Player_GUI" type="CanvasLayer" unique_id=586660666]
 follow_viewport_enabled = true
@@ -18,3 +19,25 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 metadata/_edit_use_anchors_ = true
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=979032497]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -512.0
+offset_top = -512.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=164918773]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="Animatronic Camera" type="Camera3D" parent="SubViewportContainer/SubViewport" unique_id=722829072]
+script = ExtResource("2_100ct")
+
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Animatronic Camera" unique_id=1961234873]
+offset_right = 40.0
+offset_bottom = 23.0

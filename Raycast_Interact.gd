@@ -13,8 +13,3 @@ func _unhandled_input(event: InputEvent) -> void:
 			
 			if object.has_method("interact"):
 				object.interact()
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass

@@ -1,16 +1,26 @@
 extends CharacterBody3D
 
 @onready var Camera_Bobbing = $Camera_Bobbing
-@onready var Flashlight: SpotLight3D = $Player_Camera/Flashlight
+@onready var Flashlight = $Player_Camera/Flashlight
+@onready var Bonnie = $"../Bonnie"
 
 var SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 var SPRINTING: bool = false
 
+func _ready() -> void:
+	Bonnie.process_mode = Node.PROCESS_MODE_DISABLED
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_flashlight"):
 		Flashlight.visible = not Flashlight.visible
+	
+	if event.is_action_pressed("ui_left"):
+		if Bonnie.process_mode == PROCESS_MODE_INHERIT:
+			Bonnie.process_mode = Node.PROCESS_MODE_DISABLED
+		
+		elif Bonnie.process_mode == PROCESS_MODE_DISABLED:
+			Bonnie.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -22,16 +32,15 @@ func _physics_process(delta: float) -> void:
 			
 	else:
 		SPRINTING = false
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var input_dir := Input.get_vector("left", "right", "forwards", "backwards")
+	
+	var input_dir = Input.get_vector("left", "right", "forwards", "backwards")
+	
 	if SPRINTING and input_dir.y < 0:
 		SPEED = 12
 	else:
 		SPEED = 5
 	
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
