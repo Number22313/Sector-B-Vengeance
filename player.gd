@@ -14,13 +14,6 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("toggle_flashlight"):
 		Flashlight.visible = not Flashlight.visible
-	
-	if event.is_action_pressed("ui_left"):
-		if Bonnie.process_mode == PROCESS_MODE_INHERIT:
-			Bonnie.process_mode = Node.PROCESS_MODE_DISABLED
-		
-		elif Bonnie.process_mode == PROCESS_MODE_DISABLED:
-			Bonnie.process_mode = Node.PROCESS_MODE_INHERIT
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -29,16 +22,15 @@ func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_pressed("sprint"):
 			SPRINTING = true
-			
 	else:
 		SPRINTING = false
 	
 	var input_dir = Input.get_vector("left", "right", "forwards", "backwards")
 	
 	if SPRINTING and input_dir.y < 0:
-		SPEED = 12
+		SPEED = $"..".Player_Speed
 	else:
-		SPEED = 5
+		SPEED = $"..".Player_Speed - 2
 	
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:

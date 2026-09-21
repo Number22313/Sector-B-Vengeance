@@ -27,6 +27,9 @@ orientation = 1
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_bswfn"]
 points = PackedVector3Array(2.0317461, 0.031746034, 2.0317461, -2.0317461, -0.031746034, -2.0317461, -2.0317461, 0.031746034, -2.0317461, 2.0317461, -0.031746034, -2.0317461, -2.0317461, -0.031746034, 2.0317461, -2.0317461, 0.031746034, 2.0317461, 2.0317461, 0.031746034, -2.0317461, 2.0317461, -0.031746034, 2.0317461)
 
+[sub_resource type="BoxMesh" id="BoxMesh_eoomg"]
+size = Vector3(6, 0.1, 0.5)
+
 [node name="3D_Tilemap_Objects" type="Node3D" unique_id=85623460]
 
 [node name="Wall" type="MeshInstance3D" parent="." unique_id=1641761280]
@@ -56,3 +59,6 @@ mesh = SubResource("QuadMesh_eqror")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D" unique_id=260508422]
 shape = SubResource("ConvexPolygonShape3D_bswfn")
+
+[node name="Ceiling Lights" type="MeshInstance3D" parent="." unique_id=1160849777]
+mesh = SubResource("BoxMesh_eoomg")

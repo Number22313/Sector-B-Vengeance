@@ -4,25 +4,23 @@ extends StaticBody3D
 @onready var right_door_position: Vector3 = Right_Door.position
 @onready var player_camera = $"../../../Player/Player_Camera"
 
-var open_door: bool = false
+var open_door: bool = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	interact()
 
 func interact():
 	var right_door_tween = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	var right_door_slide: Vector3
-	if not open_door:
-		print("Right door open")
+	if open_door:
 		right_door_slide = right_door_position + Vector3(0, 4, 0)
 	else:
-		print("Right door closed")
 		right_door_slide = right_door_position
 	
 	right_door_tween.tween_property(Right_Door, "position", right_door_slide, 0.6)
 	
-	if open_door:
+	if not open_door:
 		await get_tree().create_timer(0.3).timeout
 		player_camera.door_shake()
 	open_door = not open_door

@@ -7,7 +7,6 @@ extends CharacterBody3D
 @onready var animatronic_raycast = $Head/RayCast3D
 
 var SPEED = 5.0
-var chasing_SPEED = 12.0
 var roaming_SPEED = 3.0
 var update_speed: bool = false
 var pathfinding_update_time = 0.5
@@ -21,6 +20,8 @@ var roaming: bool = true
 var target_path: bool = false
 var raycast_timer = 0.0
 var raycast_update_time = 0.2
+var stuck_timer = 0.0
+var position_update: Vector3 = Vector3(0, 0, 0)
 
 func _ready() -> void:
 	# Pathfinding after everything is loaded
@@ -73,7 +74,7 @@ func animatronic_looking_at_player_check(delta):
 			seen_time += delta
 			if seen_time >= chase_delay:
 				chasing = true
-				SPEED = chasing_SPEED
+				SPEED = $"..".Foxy_Chasing_Speed
 				roaming = false
 				seen_time = 0.0
 		elif chasing:
@@ -100,6 +101,18 @@ func _input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	animatronic_looking_at_player_check(delta)
+	stuck_timer += delta
+	if stuck_timer >= 3.0:
+		var current_position = Vector3(global_position.x, 0, global_position.z)
+		var initial_position = Vector3(position_update.x, 0, position_update.z)
+		if current_position.distance_to(initial_position) < 0.1:
+			roaming = true
+			chasing = false
+			var map = get_world_3d().navigation_map
+			var random_point = NavigationServer3D.map_get_random_point(map, 1, false)
+			Pathfinding.target_position = random_point
+		stuck_timer = 0.0
+		position_update = global_position
 		
 	if chasing:
 		chase(delta)
